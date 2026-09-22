@@ -1,0 +1,89 @@
+/* =====================================================
+   RESISTOR LAB — responsive.css
+   Breakpoints: 1024 / 768 / 480
+   ===================================================== */
+
+html, body { overflow-x: hidden; }
+
+/* ---------- ≤1024px : tablet ---------- */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { order: -1; max-width: 420px; margin: 0 auto; width: 100%; }
+  .feature-strip { grid-template-columns: repeat(2, 1fr); }
+
+  .calc-layout { grid-template-columns: 1fr; }
+  .reverse-layout { grid-template-columns: 1fr; }
+
+  .color-palette { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- ≤768px : mobile nav + stacking ---------- */
+@media (max-width: 768px) {
+  .header-right { gap: 10px; }
+  .instructor-tag { display: none; }
+
+  .hamburger { display: flex; }
+
+  .main-nav {
+    position: fixed;
+    top: var(--header-h);
+    left: 0; right: 0;
+    background: rgba(11, 17, 32, 0.98);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 16px 20px;
+    gap: 2px;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .main-nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .main-nav a { padding: 14px 12px; font-size: 1rem; border-radius: var(--radius-sm); }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .feature-strip { grid-template-columns: 1fr; }
+
+  .quiz-options { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .quiz-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- ≤480px : small phones ---------- */
+@media (max-width: 480px) {
+  .header-inner { padding: 0 16px; }
+  .brand-text { font-size: 0.85rem; }
+
+  .hero { padding: 56px 16px 28px; }
+  .hero-copy h1 { font-size: 2rem; }
+
+  .section-head { margin: 44px auto 24px; padding: 0 16px; }
+  .calc-layout, .reverse-layout, .reference-filters, .table-wrap, .lessons,
+  .practice-intro, .quiz-area, .quiz-complete, .about-content, .feature-strip {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .card { padding: 20px; }
+
+  .color-palette { grid-template-columns: repeat(2, 1fr); }
+
+  .mode-btn { padding: 10px 16px; font-size: 0.88rem; }
+
+  .result-row { flex-direction: column; gap: 16px; }
+  .result-value { font-size: 1.7rem; }
+
+  .band-labels { grid-template-columns: repeat(2, 1fr); }
+
+  .lesson summary { padding: 16px 18px; font-size: 0.96rem; }
+  .lesson-body { padding: 0 18px 20px; }
+}

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resistor Lab | Resistor Color Code Calculator</title>
+<meta name="description" content="An interactive resistor color code calculator for engineering students. Decode 4-band, 5-band, and 6-band resistors with step-by-step explanations and practice quizzes.">
+
+<meta property="og:title" content="Resistor Lab | Resistor Color Code Calculator">
+<meta property="og:description" content="Decode 4-band, 5-band, and 6-band resistors with step-by-step explanations and practice quizzes.">
+<meta property="og:type" content="website">
+
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#home" class="brand" data-nav aria-label="Resistor Lab home">
+      <img src="assets/logo.svg" alt="" class="brand-logo" width="34" height="34">
+      <span class="brand-text">RESISTOR&nbsp;LAB</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="#home" data-nav>Home</a>
+      <a href="#calculator" data-nav>Calculator</a>
+      <a href="#reverse" data-nav>Reverse</a>
+      <a href="#reference" data-nav>Reference</a>
+      <a href="#learn" data-nav>Learn</a>
+      <a href="#practice" data-nav>Practice</a>
+      <a href="#about" data-nav>About</a>
+    </nav>
+
+    <div class="header-right">
+      <span class="instructor-tag">Instructor by Eng. Mark Medhat</span>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HOME / HERO ============ -->
+  <section class="page active" id="home" data-page>
+    <div class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Resistor Color Code Calculator</p>
+          <h1>Master resistor<br>color codes</h1>
+          <p class="hero-sub">Read resistor values instantly. Choose the bands, calculate the resistance, and understand exactly how the answer was calculated.</p>
+          <div class="hero-actions">
+            <a href="#calculator" class="btn btn-primary" data-nav>Start reading →</a>
+            <a href="#practice" class="btn btn-ghost" data-nav>Practice now</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-resistor-card">
+            <div class="resistor-stage" id="heroResistor"></div>
+            <div class="hero-band-tags">
+              <span>Brown</span><span>Red</span><span>Orange</span><span>Gold</span>
+            </div>
+            <div class="hero-result">
+              <span class="hero-result-value">12 kΩ</span>
+              <span class="hero-result-tol">± 5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-strip">
+      <div class="feature"><span class="feature-num">01</span><h3>Interactive bands</h3><p>Select colors on a realistic, live resistor.</p></div>
+      <div class="feature"><span class="feature-num">02</span><h3>Step-by-step math</h3><p>See exactly how every value is calculated.</p></div>
+      <div class="feature"><span class="feature-num">03</span><h3>Reverse lookup</h3><p>Turn a resistance value back into bands.</p></div>
+      <div class="feature"><span class="feature-num">04</span><h3>Practice quizzes</h3><p>Test your reading speed and accuracy.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ CALCULATOR ============ -->
+  <section class="page" id="calculator" data-page>
+    <div class="section-head">
+      <p class="eyebrow">Calculator</p>
+      <h2>Resistor calculator</h2>
+      <p class="section-sub">Pick a band type, choose the colors, and read the result instantly.</p>
+    </div>
+
+    <div class="mode-selector" role="tablist" aria-label="Resistor band type">
+      <button class="mode-btn active" data-band-type="4" role="tab" aria-selected="true">4-Band</button>
+      <button class="mode-btn" data-band-type="5" role="tab" aria-selected="false">5-Band</button>
+      <button class="mode-btn" data-band-type="6" role="tab" aria-selected="false">6-Band</button>
+    </div>
+
+    <div class="calc-layout">
+      <div class="calc-visual-col">
+        <div class="card resistor-card">
+          <div class="resistor-stage" id="calcResistor"></div>
+          <div class="band-labels" id="bandLabels"></div>
+        </div>
+
+        <div class="card result-card" id="resultCard">
+          <div class="result-row">
+            <div class="result-block">
+              <span class="result-label">Resistance</span>
+              <span class="result-value" id="resultResistance">—</span>
+            </div>
+            <div class="result-block">
+              <span class="result-label">Tolerance</span>
+              <span class="result-value result-value-sm" id="resultTolerance">—</span>
+            </div>
+            <div class="result-block" id="resultTempBlock" hidden>
+              <span class="result-label">Temp. coefficient</span>
+              <span class="result-value result-value-sm" id="resultTemp">—</span>
+            </div>
+          </div>
+          <div class="result-actions">
+            <button class="btn btn-small" id="copyResultBtn" type="button">Copy result</button>
+            <button class="btn btn-small" id="shareResultBtn" type="button">Share result</button>
+            <button class="btn btn-small btn-outline" id="resetBtn" type="button">Reset</button>
+          </div>
+          <p class="copy-feedback" id="copyFeedback" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="calc-select-col">
+        <div class="card">
+          <h3 class="card-title">Choose band colors</h3>
+          <div class="band-tabs" id="bandTabs" role="tablist" aria-label="Band to edit"></div>
+          <div class="color-palette" id="colorPalette" role="group" aria-label="Available colors"></div>
+        </div>
+
+        <div class="card explain-card">
+          <h3 class="card-title">How did we get this?</h3>
+          <ol class="explain-steps" id="explainSteps"></ol>
+          <div class="calc-line" id="calcLine"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVERSE CALCULATOR ============ -->
+  <section class="page" id="reverse" data-page>
+    <div class="section-head">
+      <p class="eyebrow">Reverse Lookup</p>
+      <h2>Resistance → color code</h2>
+      <p class="section-sub">Enter a resistance value and get the matching band colors.</p>
+    </div>
+
+    <div class="reverse-layout">
+      <form class="card reverse-form" id="reverseForm">
+        <label class="field">
+          <span>Resistance</span>
+          <input type="number" step="any" min="0" id="reverseValue" inputmode="decimal" placeholder="e.g. 4.7" required>
+        </label>
+
+        <label class="field">
+          <span>Unit</span>
+          <select id="reverseUnit">
+            <option value="1">Ω</option>
+            <option value="1000" selected>kΩ</option>
+            <option value="1000000">MΩ</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Tolerance</span>
+          <select id="reverseTolerance"></select>
+        </label>
+
+        <fieldset class="field">
+          <legend>Band type</legend>
+          <div class="radio-row">
+            <label class="radio-pill"><input type="radio" name="reverseBandType" value="4" checked> 4-Band</label>
+            <label class="radio-pill"><input type="radio" name="reverseBandType" value="5"> 5-Band</label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-block">Find color code</button>
+        <p class="form-error" id="reverseError" aria-live="polite"></p>
+      </form>
+
+      <div class="card reverse-output-card">
+        <div class="resistor-stage" id="reverseResistor"></div>
+        <div class="reverse-output" id="reverseOutput">
+          <p class="placeholder-text">Enter a value to see the matching resistor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COLOR CODE REFERENCE ============ -->
+  <section class="page" id="reference" data-page>
+    <div class="section-head">
+      <p class="eyebrow">Reference</p>
+      <h2>Color code reference</h2>
+      <p class="section-sub">Every digit, multiplier, tolerance and temperature-coefficient value in one table.</p>
+    </div>
+
+    <div class="reference-filters" id="referenceFilters">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="digit">Has digit</button>
+      <button class="filter-chip" data-filter="multiplier">Has multiplier</button>
+      <button class="filter-chip" data-filter="tolerance">Has tolerance</button>
+      <button class="filter-chip" data-filter="temp">Has temp. coefficient</button>
+    </div>
+
+    <div class="table-wrap card">
+      <table class="reference-table" id="referenceTable">
+        <thead>
+          <tr>
+            <th scope="col">Color</th>
+            <th scope="col">Digit</th>
+            <th scope="col">Multiplier</th>
+            <th scope="col">Tolerance</th>
+            <th scope="col">Temp. coefficient</th>
+          </tr>
+        </thead>
+        <tbody id="referenceTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ LEARN ============ -->
+  <section class="page" id="learn" data-page>
+    <div class="section-head">
+      <p class="eyebrow">Learn</p>
+      <h2>Resistor color-code theory</h2>
+      <p class="section-sub">Eight short lessons covering everything you need to read a resistor with confidence.</p>
+    </div>
+
+    <div class="lessons" id="lessons">
+
+      <details class="lesson card" open>
+        <summary><span class="lesson-num">01</span> What is a resistor?</summary>
+        <div class="lesson-body">
+          <p>A resistor is a passive electronic component that limits or controls the flow of electric current in a circuit. It converts excess electrical energy into heat, which lets engineers set exact current and voltage levels for the rest of the circuit to work correctly.</p>
+          <p>Resistors are measured in ohms (Ω), and most through-hole resistors are too small to print their value as text — so manufacturers use colored bands instead.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">02</span> What is resistor color coding?</summary>
+        <div class="lesson-body">
+          <p>Resistor color coding is a standardized system (IEC 60062) that represents a resistor's digits, multiplier, tolerance and sometimes temperature coefficient as a sequence of painted bands around the body.</p>
+          <p>Each color stands for a fixed value — for example, brown always means the digit 1 or a ×10 multiplier, depending on which band it occupies. Once you know the sequence of colors and their role in that position, you can calculate the resistance without any text printed on the part.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">03</span> How to read a 4-band resistor</summary>
+        <div class="lesson-body">
+          <p>A 4-band resistor is the most common type. Its bands mean:</p>
+          <ul>
+            <li>Band 1 — first significant digit</li>
+            <li>Band 2 — second significant digit</li>
+            <li>Band 3 — multiplier</li>
+            <li>Band 4 — tolerance</li>
+          </ul>
+          <p>Example: Brown, Red, Orange, Gold → digits 1 and 2, multiplied by ×1,000, giving 12,000 Ω (12 kΩ), with a tolerance of ±5%.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">04</span> How to read a 5-band resistor</summary>
+        <div class="lesson-body">
+          <p>5-band resistors add a third significant digit for higher precision:</p>
+          <ul>
+            <li>Band 1 — first significant digit</li>
+            <li>Band 2 — second significant digit</li>
+            <li>Band 3 — third significant digit</li>
+            <li>Band 4 — multiplier</li>
+            <li>Band 5 — tolerance</li>
+          </ul>
+          <p>Example: Brown, Black, Black, Red, Brown → digits 1, 0, 0, multiplied by ×100, giving 10,000 Ω (10 kΩ), with a tolerance of ±1%.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">05</span> How to read a 6-band resistor</summary>
+        <div class="lesson-body">
+          <p>6-band resistors are identical to 5-band resistors, with one extra band added at the end for the temperature coefficient:</p>
+          <ul>
+            <li>Bands 1–5 — same as a 5-band resistor</li>
+            <li>Band 6 — temperature coefficient (ppm/K)</li>
+          </ul>
+          <p>The temperature coefficient tells you how much the resistance drifts, in parts per million, for every 1°C (1 Kelvin) change in temperature — important for precision circuits exposed to varying temperatures.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">06</span> What is tolerance?</summary>
+        <div class="lesson-body">
+          <p>Tolerance is the maximum percentage the actual resistance may differ from the printed (nominal) value, due to normal manufacturing variation.</p>
+          <p>A 1,000 Ω resistor with ±5% tolerance could measure anywhere between 950 Ω and 1,050 Ω and still be considered within spec. Tighter tolerances (±1%, ±0.5%, ±0.1%) cost more but are needed in precision measurement and analog circuits.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">07</span> What is temperature coefficient?</summary>
+        <div class="lesson-body">
+          <p>The temperature coefficient of resistance (TCR) describes how much a resistor's value changes as its temperature changes, expressed in parts per million per Kelvin (ppm/K).</p>
+          <p>A resistor rated at 50 ppm/K will change its resistance by 50 millionths of its nominal value for every 1 K change in temperature. Lower numbers mean a more temperature-stable resistor — critical for precision references and measurement instruments.</p>
+        </div>
+      </details>
+
+      <details class="lesson card">
+        <summary><span class="lesson-num">08</span> How to identify the reading direction</summary>
+        <div class="lesson-body">
+          <p>A resistor should normally be read from the end where the first significant band begins. The tolerance band is often spaced further apart from the other bands and is commonly gold or silver, which helps mark it as the last band.</p>
+          <p><strong>Important:</strong> physical resistor markings can vary between manufacturers, and spacing is not an infallible identification method. When in doubt, measure the resistor with a multimeter and compare it against both possible readings — the correct reading is the one that matches a standard resistor value.</p>
+          <div class="resistor-stage lesson-resistor" id="lessonResistor"></div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ PRACTICE ============ -->
+  <section class="page" id="practice" data-page>
+    <div class="section-head">
+      <p class="eyebrow">Practice</p>
+      <h2>Resistor practice</h2>
+      <p class="section-sub">Read the resistor, pick the correct value, and track your accuracy.</p>
+    </div>
+
+    <div class="practice-intro" id="practiceIntro">
+      <p class="practice-lead">Choose a difficulty to begin.</p>
+      <div class="mode-selector" role="group" aria-label="Quiz difficulty">
+        <button class="mode-btn" data-difficulty="easy">Easy <small>4-band</small></button>
+        <button class="mode-btn" data-difficulty="medium">Medium <small>5-band</small></button>
+        <button class="mode-btn" data-difficulty="hard">Hard <small>6-band</small></button>
+      </div>
+    </div>
+
+    <div class="quiz-area" id="quizArea" hidden>
+      <div class="quiz-top">
+        <span id="quizProgress">Question 1 / 10</span>
+        <span id="quizScore">Score: 0 / 10</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="card quiz-card">
+        <div class="resistor-stage" id="quizResistor"></div>
+        <h3 class="quiz-question">What is the resistance?</h3>
+        <div class="quiz-options" id="quizOptions"></div>
+        <p class="quiz-feedback" id="quizFeedback" aria-live="polite"></p>
+        <button class="btn btn-primary" id="nextQuestionBtn" hidden>Next question</button>
+      </div>
+    </div>
+
+    <div class="quiz-complete card" id="quizComplete" hidden>
+      <h3>Quiz complete</h3>
+      <div class="quiz-stats">
+        <div><span id="statScore">0/10</span><small>Score</small></div>
+        <div><span id="statCorrect">0</span><small>Correct</small></div>
+        <div><span id="statIncorrect">0</span><small>Incorrect</small></div>
+        <div><span id="statAccuracy">0%</span><small>Accuracy</small></div>
+      </div>
+      <button class="btn btn-primary" id="restartQuizBtn">Try again</button>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="page" id="about" data-page>
+    <div class="section-head">
+      <p class="eyebrow">About</p>
+      <h2>About Resistor Lab</h2>
+    </div>
+    <div class="about-content card">
+      <p>Resistor Lab is an interactive educational tool designed to help engineering students understand resistor color codes, calculate resistance values, and practice reading real-world resistor configurations.</p>
+      <div class="about-grid">
+        <div>
+          <h3>Instructor</h3>
+          <p>Eng. Mark Medhat</p>
+        </div>
+        <div>
+          <h3>Focus</h3>
+          <p>Electronics<br>Electrical Engineering<br>Engineering Education</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" width="28" height="28">
+      <span>RESISTOR LAB</span>
+    </div>
+    <p class="footer-tagline">Read. Calculate. Learn.</p>
+    <p class="footer-sub">Interactive Engineering Tool</p>
+    <p class="footer-sub">Instructor by Eng. Mark Medhat</p>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="#calculator" data-nav>Calculator</a>
+      <a href="#reference" data-nav>Reference</a>
+      <a href="#learn" data-nav>Learn</a>
+      <a href="#practice" data-nav>Practice</a>
+      <a href="#about" data-nav>About</a>
+    </nav>
+
+    <p class="footer-copy">© 2026</p>
+  </div>
+</footer>
+
+<script src="js/resistor-data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/reverse-calculator.js"></script>
+<script src="js/visualization.js"></script>
+<script src="js/practice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
